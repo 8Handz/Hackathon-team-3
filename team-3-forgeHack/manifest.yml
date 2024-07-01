@@ -1,0 +1,19 @@
+modules:
+  macro:
+    - key: Poll-Forge-App
+      resource: main
+      render: native
+      resolver:
+        function: resolver
+      title: Poll Forge App
+      config: true
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+app:
+  runtime:
+    name: nodejs18.x
+  id: ari:cloud:ecosystem::app/306417c1-d3f3-4339-9379-13db00620666
