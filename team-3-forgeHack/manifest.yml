@@ -22,6 +22,15 @@ permissions:
       - https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif
     images:
       - media.giphy.com
+      - 'https://www.developmentaid.org/files/organizationLogos/the-american-india-foundation-trust-378221.jpg'
+      - 'https://avpn.asia/wp-content/uploads/2016/07/bat_facebook.jpg'
+      - 'https://data.org/wp-content/uploads/2022/05/careervillage-logo.png'
+      - 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Code.org_logo.svg/320px-Code.org_logo.svg.png'
+      # - 'https://static.wixstatic.com/media/4d0f97_c0376c82721a4246af2580d3238bf7c6~mv2.png/v1/fill/w_300,h_300,fp_0.50_0.50,q_95,enc_auto/4d0f97_c0376c82721a4246af2580d3238bf7c6~mv2.png'
+      # - 'https://static.ethicaljobs.com.au/media/1630979567_oVrxE_.png'
+      # - 'https://d2y4rc9q318ytb.cloudfront.net/accounts/beaec441-926f-4353-b394-7a6128a21bff/540x350/1689175602837-34d9c14d.png'
+      # - 'https://asset.brandfetch.io/idLAY8Z2EE/idDG4IQlKz.png'
+      
 app:
   runtime:
     name: nodejs18.x
