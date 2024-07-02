@@ -13,6 +13,10 @@ modules:
 resources:
   - key: main
     path: src/frontend/index.jsx
+permissions:
+  scopes:
+    - 'read:jira-work'
+    - 'read:page:confluence'
 app:
   runtime:
     name: nodejs18.x
