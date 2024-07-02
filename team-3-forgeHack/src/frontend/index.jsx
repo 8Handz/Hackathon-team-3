@@ -27,7 +27,7 @@ const App = () => {
 
   return (
     <>
-      <Box  />
+      <Box   />
       <AvatarStack>
         <Avatar accountId="5a1234bc8d12345e3f1g11hi" />
         <Avatar accountId="2a98a42dbc7ab42e12ee360d" />
