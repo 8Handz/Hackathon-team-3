@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ForgeReconciler, { Text } from "@forge/react";
+import { Modal, ModalBody, ModalTransition, ModalTitle, ModalFooter, ModalHeader, Strong } from '@forge/react';
 import {
   ProgressTracker,
   Stack,
@@ -12,7 +13,6 @@ import {
   Inline,
   ProgressBar,
   Spinner,
-  RadioGroup,
   Heading,
   RequiredAsterisk,
   ErrorMessage,
@@ -22,8 +22,18 @@ import {
   FormFooter,
   useForm,
   Divider,
+  Toggle,
+  HelperMessage,
+  RadioGroup,
+  Range,
+  Select,
+  ButtonGroup,
+  UserGroup,
+  User,
+  LoadingButton
 } from "@forge/react";
 import { invoke, view } from "@forge/bridge";
+import { ValidationMessage } from '@forge/react';
 
 const App = () => {
   useEffect(() => {
@@ -33,7 +43,7 @@ const App = () => {
 
   const data = [
     {
-      name: "AIF",
+      name: "American India Foundation",
       logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
       description:
         "American India Foundation (AIF) brings 20-years of experience catalyzing social and economic change in India to improve the lives of India's underprivileged with a special focus on women, children, and youth.",
@@ -67,8 +77,138 @@ const App = () => {
   );
 };
 
+const DonationForm = ({name, onClose}) => {
+  const { getFieldId, register, handleSubmit } = useForm();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = () => {
+    setIsSubmitting(true);
+    handleSubmit((data) => {
+      console.log(data);
+    });
+    setTimeout(() => {
+      setIsSubmitted(true);
+      setIsSubmitting(true);
+    }, 2000);
+  };
+
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Heading as="h2">Foundation name: {name}</Heading>
+      <Stack space="space.200">
+          <Box>
+            <Label labelFor={getFieldId("name")}>
+              Name <RequiredAsterisk />
+            </Label>
+            <Textfield
+              {...register("name", {
+                required: true,
+              })}
+            />
+          </Box>
+          <Box>
+            <Label labelFor={getFieldId("money")}>
+              Amount of Money <RequiredAsterisk />
+            </Label>
+            <Textfield
+              {...register("money", {
+                required: true,
+                pattern: {
+                value: /^[0-9]*$/
+                }
+              })}
+            />
+            <HelperMessage>Please put valid number.</HelperMessage>   
+          </Box>
+          <Box>
+            <Label labelFor={getFieldId("card")}>
+              Card number <RequiredAsterisk />
+            </Label>
+            <Textfield
+              {...register("card", {
+                required: true,
+                pattern: {
+                value: /^[0-9]*$/
+                },
+                minLength: {
+                  value: 16
+                },
+                maxLength: {
+                  value: 16
+                }
+              })}
+            />  
+            <HelperMessage>Valid number card must be exactly 16 characters long.</HelperMessage> 
+          </Box>
+          <Box>
+            <Label labelFor={getFieldId("security")}>
+              CVC <RequiredAsterisk />
+            </Label>
+            <Textfield
+              {...register("security", {
+                required: true,
+                pattern: {
+                value: /^[0-9]*$/
+                },
+                minLength: {
+                  value: 3,
+                },
+                maxLength: {
+                  value: 3
+                }
+              })}
+            />  
+            <HelperMessage>Security number must be exactly 3 characters long.</HelperMessage> 
+          </Box>
+      <FormFooter>
+          {isSubmitted ? (
+            <>
+            <Button appearance="subtle" onClick={onClose}>Close</Button>
+            <Button
+              appearance="primary"
+              xcss={xcss({
+                backgroundColor: "color.border.success",
+              })}
+            >
+              Success!
+            </Button>
+            </>) : (
+            <>
+              {isSubmitting ? (
+                <>
+                <LoadingButton appearance="primary" isLoading>
+                  Loading button
+                </LoadingButton>
+                </>
+              ) : (
+                <>
+                <Button appearance="subtle" onClick={onClose}>Close</Button>
+                <Button appearance="primary" type="submit">
+                  Submit
+                </Button>
+                </>
+              )}
+            </>
+                )}
+      </FormFooter>
+      </Stack>
+    </Form>
+  );
+};
+
 const FundButton = ({ name, image, description }) => {
   const [clicked, setClicked] = useState(false);
+  const [donated, setDonated] = useState(false);
+  const { getFieldId, register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    onClose();
+    alert("Donation successfully made!");
+  };
+
+  const openDonated = () => setDonated(true);
+  const closeDonated = () => setDonated(false);
 
   return (
     <>
@@ -87,6 +227,21 @@ const FundButton = ({ name, image, description }) => {
             backgroundColor: "color.background.accent.gray.subtlest",
           })}
         >
+          <ModalTransition>
+            {donated && (
+              <Modal onClose={closeDonated}>
+              <ModalHeader>
+                <ModalTitle>Payment Details</ModalTitle>
+              </ModalHeader>
+              <ModalBody>
+                <DonationForm name={name} onClose={closeDonated}/>
+              </ModalBody>
+              <ModalFooter>
+
+              </ModalFooter>
+            </Modal>
+            )}
+          </ModalTransition>
           <Stack space="space.200">
             <Heading as="h1">Summary ✨</Heading>
             <Inline>
@@ -98,7 +253,7 @@ const FundButton = ({ name, image, description }) => {
                 <ProgressBarSuccessExample />
                 <Stack grow="fill">
                   <Inline alignInline="end" space="space.200">
-                    <Button>Donate</Button>
+                    <Button onClick={openDonated}>Donate</Button>
                     <Button>Volunteer</Button>
                   </Inline>
                 </Stack>
