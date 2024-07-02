@@ -5,7 +5,7 @@ modules:
       render: native
       resolver:
         function: resolver
-      title: Poll Forge App
+      title: Hackathon
       config: true
   function:
     - key: resolver
@@ -15,8 +15,13 @@ resources:
     path: src/frontend/index.jsx
 permissions:
   scopes:
-    - 'read:jira-work'
-    - 'read:page:confluence'
+    - read:jira-work
+    - read:page:confluence
+  external:
+    media:
+      - https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif
+    images:
+      - media.giphy.com
 app:
   runtime:
     name: nodejs18.x
