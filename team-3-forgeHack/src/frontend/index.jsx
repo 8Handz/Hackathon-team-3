@@ -53,15 +53,60 @@ const App = () => {
     {
       name: "American India Foundation",
       logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
-      description:
-        "American India Foundation (AIF) brings 20-years of experience catalyzing social and economic change in India to improve the lives of India's underprivileged with a special focus on women, children, and youth.",
-    },
-    {
+      description: "The American India Foundation (AIF) is dedicated to accelerating social and economic change in India through education, livelihoods, public health, and leadership development programs.",
+      review: "Reviews commend AIF for its significant impact on improving lives across India, particularly through scalable and sustainable initiatives.",
+      overall: "However, some feedback notes challenges in program scalability and resource allocation, despite overall positive recognition for its contributions to social development in India.",
+      rating: "⭐⭐⭐⭐⭐  "
+    }, {
       name: "British Asian Trust",
       logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
-      description:
-        "American India Foundation (AIF) brings 20-years of experience catalyzing social and economic change in India to improve the lives of India's underprivileged with a special focus on women, children, and youth.",
-    },
+      description: "The British Asian Trust focuses on poverty reduction and improving lives in South Asia through education, livelihoods, mental health, and anti-trafficking initiatives.",
+      review: "It employs innovative funding models and collaborates with local partners to achieve its goals. Reviews highlight the Trust's impactful projects and strategic partnerships, though there are calls for enhanced transparency and community engagement.",
+      overall: "Overall, it is respected for its commitment to sustainable development in the region.",
+      rating: "⭐⭐⭐⭐⭐   "
+    }, {
+      name: "CarrerVillage.org",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description: "CareerVillage.org crowdsources career advice to help students make informed career choices by connecting them with professionals.",
+      review: "Users praise its accessibility and personalized guidance, noting positive impacts on career planning and confidence.",
+      overall: "Feedback suggests a desire for more diverse industry professionals and consistent volunteer engagement, but overall, CareerVillage.org is highly regarded for its innovative and effective career guidance approach.",
+      rating: "⭐⭐⭐⭐⭐  "
+    }, {
+      name: "Code.org",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description: "Code.org is a nonprofit organization dedicated to global expansion of computer science education through free coding courses and resources.",
+      review: "It empowers students with digital skills and supports educators with professional development.",
+      overall: "Positive reviews highlight Code.org's user-friendly curriculum and engagement, though occasional technical issues and pacing challenges are noted, overall emphasizing its impactful role in accessible and engaging computer science education worldwide.",
+      rating: "⭐⭐⭐⭐⭐  "
+    }, {
+      name: "Education Outcomes Fund",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description: "The Education Outcomes Fund (EOF) aims to enhance global education outcomes through innovative financing that incentivizes effective interventions.",
+      review: "It collaborates with governments, donors, and organizations to fund projects that demonstrate measurable improvements in learning outcomes.",
+      overall: "While stakeholders praise EOF's innovative funding model and potential impact, challenges in scaling projects and ensuring sustainability remain areas of concern.",
+      rating: "⭐⭐⭐⭐⭐  "
+    }, {
+      name: "Room to Read",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description: "Room to Read is dedicated to promoting literacy and gender equality across Asia and Africa through library construction, book provision, and support for girls' education.",
+      review: "It emphasizes local partnerships and community engagement for lasting impact.",
+      overall: "Reviews highlight its positive influence on literacy rates and girls' empowerment, but note challenges in scaling programs and maintaining outcomes in varied socio-economic settings.",
+      rating: "⭐⭐⭐⭐⭐  "
+    }, {
+      name: "Raspberry Pi Foundation",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description: "The Raspberry Pi Foundation, based in the UK, advances global computer science education with affordable and versatile Raspberry Pi computers, bolstering educators with training and resources.",
+      review: "It receives positive reviews for empowering learning in programming and electronics, though occasional technical issues exist, managed well by community support.",
+      overall: "Overall, the Foundation is esteemed for its substantial influence on worldwide computer education, providing accessible tools despite occasional technical hurdles.",
+      rating: "⭐⭐⭐⭐⭐  "
+    }, {
+      name: "ruangguru",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description: "Ruangguru is an Indonesian edtech firm providing online learning tools for K-12 students, emphasizing accessibility and affordability.",
+      review: "Users generally praise its comprehensive content and interactive learning features, which positively impact academic performance.",
+      overall: "However, concerns about app stability and customer service quality occasionally surface, despite its overall positive reputation for innovative educational solutions in Indonesia.",
+      rating: "⭐⭐⭐⭐⭐   "
+    }
   ];
 
   return (
@@ -83,7 +128,10 @@ const App = () => {
             name={fund.name}
             image={fund.logo}
             description={fund.description}
+            review={fund.review}
+            overall={fund.overall}
             key={fund.name}
+            rating={fund.rating}
           />
         ))}
       </Stack>
@@ -220,7 +268,7 @@ const DonationForm = ({ name, onClose }) => {
   );
 };
 
-const FundButton = ({ name, image, description }) => {
+const FundButton = ({ name, image, description, review, overall, rating }) => {
   const [clicked, setClicked] = useState(false);
   const [donated, setDonated] = useState(false);
   const openDonated = () => setDonated(true);
@@ -269,7 +317,7 @@ const FundButton = ({ name, image, description }) => {
         <Box
           xcss={xcss({
             padding: "space.200",
-            backgroundColor: "color.background.accent.gray.subtlest",
+            backgroundColor: "color.background.accent.gray.subtlest"
           })}
         >
           <ModalTransition>
@@ -285,23 +333,54 @@ const FundButton = ({ name, image, description }) => {
               </Modal>
             )}
           </ModalTransition>
-          <Stack space="space.200">
+          <Stack space="space.100">
             <Heading as="h1">Summary ✨</Heading>
             <Inline>
-              <Stack alignInline="start" grow="hug">
+              <Stack alignInline="start">
                 <Image size="large" src={image} />
               </Stack>
-              <Stack space="space.150">
+              <Stack space="space.50">
                 <Text>{description}</Text>
-                <ProgressBarSuccessExample />
-                <Stack grow="fill">
-                  <Inline alignInline="end" space="space.200">
-                    <Button onClick={openDonated}>Donate</Button>
-                    <Button onClick={openModal}>Volunteer</Button>
-                  </Inline>
-                </Stack>
+                <Text>{review}</Text>
+                <Text>{overall}</Text>
               </Stack>
             </Inline>
+              <Heading as="h3">What Atlassians Think 👀</Heading>
+            <Inline space="space.200">
+              <Stack>
+                <Heading as="h3">{rating}</Heading>
+              </Stack>
+              <Stack alignInline="center" grow="fill">
+                <Text>Such a cool initiative from {name}! They're making a meaningful impact in community through their innovative approach and dedication to education</Text>
+              </Stack>
+            </Inline>
+            <Heading as="h3">Top Contributor 💥</Heading>
+            <Inline xcss={{marginBottom: 'space.200'}}>
+              <Stack>
+                <User accountId="5a1234bc8d12345e3f1g11hi" />
+              </Stack>
+              <Stack alignInline="center" grow="fill" space="space.400">
+                <Text>Wow, The {name} is doing fantastic work! Their dedication to making a positive impact across community is truly inspiring. Keep up the great work!</Text>  
+              </Stack>
+            </Inline>
+
+            <Inline spread="space-between"> 
+         
+                <UserGroup>
+                  <User accountId="5a1234bc8d12345e3f1g11hi" />
+                  <User accountId="2a98a42dbc7ab42e12ee360d" />
+                  <User accountId="5d8732lq8jg85a0e3f1g90as" />
+                  <User accountId="2h98a10dbl5ab93e62hja23z" />
+                  <User accountId="7b20f0bc2d05325e3f1g43ty" />
+                  <User accountId="2p72s42dbc7ab42e90gf252d" />
+                  <User accountId="2l01x78mf4pqw42e84fg40ad" />
+                </UserGroup>   
+                <Inline space="space.200">
+                  <Button onClick={openDonated}>Donate</Button>
+                  <Button onClick={openModal}>Volunteer</Button>
+                </Inline>
+            </Inline>
+        
           </Stack>
         </Box>
       )}
@@ -356,17 +435,6 @@ const FundButton = ({ name, image, description }) => {
         )}
       </ModalTransition>
     </>
-  );
-};
-
-const ProgressBarSuccessExample = () => {
-  return (
-    <ProgressBar
-      xcss={{ marginBottom: "space.200" }}
-      appearance="success"
-      ariaLabel="Done: 10 of 10 issues"
-      value={0.7}
-    />
   );
 };
 
