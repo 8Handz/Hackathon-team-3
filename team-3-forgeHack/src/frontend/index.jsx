@@ -35,7 +35,7 @@ import {
   ModalTitle,
   ModalFooter,
   ModalHeader,
-  Strong
+  Strong,
   Form,
   useForm,
   Textfield
@@ -207,7 +207,6 @@ const DonationForm = ({name, onClose}) => {
 const FundButton = ({ name, image, description }) => {
   const [clicked, setClicked] = useState(false);
   const [donated, setDonated] = useState(false);
-  const { getFieldId, register, handleSubmit } = useForm();
   const openDonated = () => setDonated(true);
   const closeDonated = () => setDonated(false);
   const [isOpen, setIsOpen] = useState(false);
