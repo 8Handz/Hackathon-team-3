@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import ForgeReconciler, { Text } from "@forge/react";
-import { ProgressTracker } from "@forge/react";
-import { Stack } from "@forge/react";
-import { Box } from "@forge/react";
-import { invoke } from "@forge/bridge";
-import { Label, Textfield, TextArea, xcss } from "@forge/react";
-import { view } from "@forge/bridge";
-import { Spinner } from "@forge/react";
 import {
+  ProgressTracker,
+  Stack,
+  Box,
+  Label,
+  Textfield,
+  TextArea,
+  xcss,
+  Image,
+  Inline,
+  ProgressBar,
+  Spinner,
   RadioGroup,
   Heading,
   RequiredAsterisk,
@@ -17,12 +21,11 @@ import {
   FormSection,
   FormFooter,
   useForm,
+  Divider,
 } from "@forge/react";
+import { invoke, view } from "@forge/bridge";
 
 const App = () => {
-  // const [data, setData] = useState(null);
-  // const [clicked, setClicked] = useState(false);
-
   useEffect(() => {
     // Grab data of buttons in json object
     // invoke("getText", { example: "my-invoke-variable" }).then(setData);
@@ -31,42 +34,40 @@ const App = () => {
   const data = [
     {
       name: "AIF",
-      logo: "image",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description:
+        "American India Foundation (AIF) brings 20-years of experience catalyzing social and economic change in India to improve the lives of India's underprivileged with a special focus on women, children, and youth.",
     },
     {
       name: "British Asian Trust",
-      logo: "image",
+      logo: "https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif",
+      description:
+        "American India Foundation (AIF) brings 20-years of experience catalyzing social and economic change in India to improve the lives of India's underprivileged with a special focus on women, children, and youth.",
     },
   ];
 
   return (
-    <>
-      {/* <Button
-        onClick={() => setClicked((prev) => !prev)}
-        shouldFitContainer
-        appearance="primary"
-      >
-        America India Foundation
-      </Button> */}
+    <Stack alignInline="center" alignBlock="center" space="space.300">
+      <Box xcss={xcss({ marginBottom: "space.150" })}>
+        <Heading as="h1">Foundation Fundraiser !!</Heading>
+      </Box>
 
-      <Stack alignInline="center" alignBlock="center">
-        <Box xcss={xcss({ marginBottom: "space.150" })}>
-          <Heading as="h1">Foundation Fundraiser !!</Heading>
-        </Box>
-
-        <Stack alignInline="center" alignBlock="center" space="space.100">
-          <ProgressTrackerExample />
-          {/* <Stack grow="fill" space="space.200"> */}
-          {data.map((fund) => (
-            <FundButton name={fund.name} />
-          ))}
-        </Stack>
+      <Stack alignInline="center" alignBlock="center" space="space.200">
+        <ProgressTrackerExample />
+        {data.map((fund) => (
+          <FundButton
+            name={fund.name}
+            image={fund.logo}
+            description={fund.description}
+            key={fund.name}
+          />
+        ))}
       </Stack>
-    </>
+    </Stack>
   );
 };
 
-const FundButton = ({ name }) => {
+const FundButton = ({ name, image, description }) => {
   const [clicked, setClicked] = useState(false);
 
   return (
@@ -75,31 +76,49 @@ const FundButton = ({ name }) => {
         onClick={() => setClicked((prev) => !prev)}
         shouldFitContainer
         appearance="primary"
+        xcss={xcss({ marginBottom: "space.200" })}
       >
         {name}
       </Button>
-      {clicked && <SummaryStack />}
+      {clicked && (
+        <Box
+          xcss={xcss({
+            padding: "space.200",
+            backgroundColor: "color.background.accent.gray.subtlest",
+          })}
+        >
+          <Stack space="space.200">
+            <Heading as="h1">Summary ✨</Heading>
+            <Inline>
+              <Stack alignInline="start" grow="hug">
+                <Image size="large" src={image} />
+              </Stack>
+              <Stack space="space.150">
+                <Text>{description}</Text>
+                <ProgressBarSuccessExample />
+                <Stack grow="fill">
+                  <Inline alignInline="end" space="space.200">
+                    <Button>Donate</Button>
+                    <Button>Volunteer</Button>
+                  </Inline>
+                </Stack>
+              </Stack>
+            </Inline>
+          </Stack>
+        </Box>
+      )}
     </>
   );
 };
 
-const SummaryStack = () => {
+const ProgressBarSuccessExample = () => {
   return (
-    <>
-      <Box
-        xcss={xcss({
-          backgroundColor: "color.background.discovery",
-        })}
-      >
-        <Stack>
-          <Text>
-            skjdnfskjdnfksnfksdnfklsdnfksnflksdnflksnflksnflksndflkssdfkjsnfjknskfjnsdkjfnsdjfnsdkjnfksjdnfjksnfkjsnfnsdfjsdnfksdnfksjfkjsf
-            sdfjnsdkjfskjdnfkjsdnfkjsdnfkjsnfjksdnfksdnfsdkf
-            sdfkjsnfkjsdnfkjsnfkjsnfkjsn
-          </Text>
-        </Stack>
-      </Box>
-    </>
+    <ProgressBar
+      xcss={{ marginBottom: "space.200" }}
+      appearance="success"
+      ariaLabel="Done: 10 of 10 issues"
+      value={0.7}
+    />
   );
 };
 
