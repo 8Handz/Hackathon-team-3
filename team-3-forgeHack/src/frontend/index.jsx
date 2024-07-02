@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ForgeReconciler, { Text } from "@forge/react";
 import { DatePicker } from "@forge/react";
 import StarIcon from "@atlaskit/icon/glyph/star";
+import { Badge } from "@forge/react";
 import {
   ProgressTracker,
   LoadingButton,
@@ -38,10 +39,10 @@ import {
   Strong,
   Form,
   useForm,
-  Textfield
+  Textfield,
 } from "@forge/react";
 import { invoke, view } from "@forge/bridge";
-import { ValidationMessage } from '@forge/react';
+import { ValidationMessage } from "@forge/react";
 
 const App = () => {
   useEffect(() => {
@@ -69,6 +70,12 @@ const App = () => {
         <Heading as="h1">Foundation Fundraiser !!</Heading>
       </Box>
 
+      <Inline>
+        Hours <Badge appearance="primary">{"12hrs"}</Badge>
+        <Box xcss={xcss({ marginLeft: "space.150" })}></Box>
+        Donations <Badge appearance="primary">{"$250"}</Badge>
+      </Inline>
+
       <Stack alignInline="center" alignBlock="center" space="space.200">
         <ProgressTrackerExample />
         {data.map((fund) => (
@@ -84,7 +91,7 @@ const App = () => {
   );
 };
 
-const DonationForm = ({name, onClose}) => {
+const DonationForm = ({ name, onClose }) => {
   const { getFieldId, register, handleSubmit } = useForm();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -104,101 +111,110 @@ const DonationForm = ({name, onClose}) => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Heading as="h2">Foundation name: {name}</Heading>
       <Stack space="space.200">
-          <Box>
-            <Label labelFor={getFieldId("name")}>
-              Name <RequiredAsterisk />
-            </Label>
-            <Textfield
-              {...register("name", {
-                required: true,
-              })}
-            />
-          </Box>
-          <Box>
-            <Label labelFor={getFieldId("money")}>
-              Amount of Money <RequiredAsterisk />
-            </Label>
-            <Textfield
-              {...register("money", {
-                required: true,
-                pattern: {
-                value: /^[0-9]*$/
-                }
-              })}
-            />
-            <HelperMessage>Please put valid number.</HelperMessage>   
-          </Box>
-          <Box>
-            <Label labelFor={getFieldId("card")}>
-              Card number <RequiredAsterisk />
-            </Label>
-            <Textfield
-              {...register("card", {
-                required: true,
-                pattern: {
-                value: /^[0-9]*$/
-                },
-                minLength: {
-                  value: 16
-                },
-                maxLength: {
-                  value: 16
-                }
-              })}
-            />  
-            <HelperMessage>Valid number card must be exactly 16 characters long.</HelperMessage> 
-          </Box>
-          <Box>
-            <Label labelFor={getFieldId("security")}>
-              CVC <RequiredAsterisk />
-            </Label>
-            <Textfield
-              {...register("security", {
-                required: true,
-                pattern: {
-                value: /^[0-9]*$/
-                },
-                minLength: {
-                  value: 3,
-                },
-                maxLength: {
-                  value: 3
-                }
-              })}
-            />  
-            <HelperMessage>Security number must be exactly 3 characters long.</HelperMessage> 
-          </Box>
-      <FormFooter>
+        <Box>
+          <Label labelFor={getFieldId("name")}>
+            Name <RequiredAsterisk />
+          </Label>
+          <Textfield
+            {...register("name", {
+              required: true,
+            })}
+          />
+        </Box>
+        <Box>
+          <Label labelFor={getFieldId("money")}>
+            Amount of Money <RequiredAsterisk />
+          </Label>
+          <Textfield
+            {...register("money", {
+              required: true,
+              pattern: {
+                value: /^[0-9]*$/,
+              },
+            })}
+          />
+          <HelperMessage>Please put valid number.</HelperMessage>
+        </Box>
+        <Box>
+          <Label labelFor={getFieldId("card")}>
+            Card number <RequiredAsterisk />
+          </Label>
+          <Textfield
+            {...register("card", {
+              required: true,
+              pattern: {
+                value: /^[0-9]*$/,
+              },
+              minLength: {
+                value: 16,
+              },
+              maxLength: {
+                value: 16,
+              },
+            })}
+          />
+          <HelperMessage>
+            Valid number card must be exactly 16 characters long.
+          </HelperMessage>
+        </Box>
+        <Box>
+          <Label labelFor={getFieldId("security")}>
+            CVC <RequiredAsterisk />
+          </Label>
+          <Textfield
+            {...register("security", {
+              required: true,
+              pattern: {
+                value: /^[0-9]*$/,
+              },
+              minLength: {
+                value: 3,
+              },
+              maxLength: {
+                value: 3,
+              },
+            })}
+          />
+          <HelperMessage>
+            Security number must be exactly 3 characters long.
+          </HelperMessage>
+        </Box>
+        <FormFooter>
           {isSubmitted ? (
             <>
-            <Button appearance="subtle" onClick={onClose}>Close</Button>
-            <Button
-              appearance="primary"
-              xcss={xcss({
-                backgroundColor: "color.border.success",
-              })}
-            >
-              Success!
-            </Button>
-            </>) : (
+              <Button appearance="subtle" onClick={onClose}>
+                Close
+              </Button>
+              <Button
+                appearance="primary"
+                xcss={xcss({
+                  backgroundColor: "color.border.success",
+                })}
+              >
+                Success!
+              </Button>
+            </>
+          ) : (
             <>
               {isSubmitting ? (
                 <>
-                <LoadingButton appearance="primary" isLoading>
-                  Loading button
-                </LoadingButton>
+                  <LoadingButton appearance="primary" isLoading>
+                    Loading button
+                  </LoadingButton>
                 </>
               ) : (
                 <>
-                <Button appearance="subtle" onClick={onClose}>Close</Button>
-                <Button appearance="primary" type="submit">
-                  Submit
-                </Button>
+                  <Button appearance="subtle" onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button appearance="primary" type="submit">
+                    Submit
+                  </Button>
                 </>
               )}
             </>
-                )}
-      </FormFooter>
+          )}
+        </FormFooter>
       </Stack>
     </Form>
   );
@@ -259,16 +275,14 @@ const FundButton = ({ name, image, description }) => {
           <ModalTransition>
             {donated && (
               <Modal onClose={closeDonated}>
-              <ModalHeader>
-                <ModalTitle>Payment Details</ModalTitle>
-              </ModalHeader>
-              <ModalBody>
-                <DonationForm name={name} onClose={closeDonated}/>
-              </ModalBody>
-              <ModalFooter>
-
-              </ModalFooter>
-            </Modal>
+                <ModalHeader>
+                  <ModalTitle>Payment Details</ModalTitle>
+                </ModalHeader>
+                <ModalBody>
+                  <DonationForm name={name} onClose={closeDonated} />
+                </ModalBody>
+                <ModalFooter></ModalFooter>
+              </Modal>
             )}
           </ModalTransition>
           <Stack space="space.200">
@@ -363,37 +377,31 @@ const ProgressTrackerExample = () => {
       items={[
         {
           id: "1",
-          label: "Disabled step",
+          label: "Bronze Badge 🥉",
           percentageComplete: 100,
-          status: "disabled",
+          status: "visited",
         },
         {
           id: "2",
-          label: "Create a space",
+          label: "Silver Badge 🥈",
           percentageComplete: 100,
           status: "visited",
         },
         {
           id: "3",
-          label: "Upload a photo",
+          label: "Gold Badge 🥇",
           percentageComplete: 0,
           status: "current",
         },
         {
           id: "4",
-          label: "Your details",
+          label: "Platinum Badge 💠",
           percentageComplete: 0,
           status: "unvisited",
         },
         {
           id: "5",
-          label: "Invite users",
-          percentageComplete: 0,
-          status: "unvisited",
-        },
-        {
-          id: "6",
-          label: "Confirm",
+          label: "Diamond Badge 💎",
           percentageComplete: 0,
           status: "unvisited",
         },
