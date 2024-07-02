@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ForgeReconciler, { Text } from "@forge/react";
-import { Modal, ModalBody, ModalTransition, ModalTitle, ModalFooter, ModalHeader, Strong } from '@forge/react';
+import { DatePicker } from "@forge/react";
+import StarIcon from "@atlaskit/icon/glyph/star";
 import {
   ProgressTracker,
+  LoadingButton,
   Stack,
   Box,
   Label,
-  Textfield,
   TextArea,
   xcss,
   Image,
@@ -17,10 +18,8 @@ import {
   RequiredAsterisk,
   ErrorMessage,
   Button,
-  Form,
   FormSection,
   FormFooter,
-  useForm,
   Divider,
   Toggle,
   HelperMessage,
@@ -30,14 +29,22 @@ import {
   ButtonGroup,
   UserGroup,
   User,
-  LoadingButton
+  Modal,
+  ModalBody,
+  ModalTransition,
+  ModalTitle,
+  ModalFooter,
+  ModalHeader,
+  Strong
+  Form,
+  useForm,
+  Textfield
 } from "@forge/react";
 import { invoke, view } from "@forge/bridge";
 import { ValidationMessage } from '@forge/react';
 
 const App = () => {
   useEffect(() => {
-    // Grab data of buttons in json object
     // invoke("getText", { example: "my-invoke-variable" }).then(setData);
   }, []);
 
@@ -201,14 +208,36 @@ const FundButton = ({ name, image, description }) => {
   const [clicked, setClicked] = useState(false);
   const [donated, setDonated] = useState(false);
   const { getFieldId, register, handleSubmit } = useForm();
-
-  const onSubmit = (data) => {
-    onClose();
-    alert("Donation successfully made!");
-  };
-
   const openDonated = () => setDonated(true);
   const closeDonated = () => setDonated(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { handleSubmit, getFieldId, register } = useForm();
+  const [disabledDates, setDisabledDates] = useState([
+    "2024-07-07",
+    "2024-07-08",
+    "2024-07-09",
+    "2024-07-16",
+    "2024-07-17",
+    "2024-07-18",
+  ]);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => {
+    setIsSubmitted(false);
+    setIsSubmitting(false);
+    setIsOpen(false);
+  };
+
+  const onSubmit = (data) => {
+    setIsSubmitting(true);
+    setDisabledDates((prevDates) => [...prevDates, data.datepicker]);
+    setTimeout(() => {
+      setIsSubmitted(true);
+      setIsSubmitting(true);
+    }, 2000);
+  };
 
   return (
     <>
@@ -216,6 +245,7 @@ const FundButton = ({ name, image, description }) => {
         onClick={() => setClicked((prev) => !prev)}
         shouldFitContainer
         appearance="primary"
+        iconBefore="star"
         xcss={xcss({ marginBottom: "space.200" })}
       >
         {name}
@@ -254,7 +284,7 @@ const FundButton = ({ name, image, description }) => {
                 <Stack grow="fill">
                   <Inline alignInline="end" space="space.200">
                     <Button onClick={openDonated}>Donate</Button>
-                    <Button>Volunteer</Button>
+                    <Button onClick={openModal}>Volunteer</Button>
                   </Inline>
                 </Stack>
               </Stack>
@@ -262,6 +292,56 @@ const FundButton = ({ name, image, description }) => {
           </Stack>
         </Box>
       )}
+
+      <ModalTransition>
+        {isOpen && (
+          <Modal onClose={closeModal}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <ModalHeader>
+                <ModalTitle>Chose a date to volunteer! 🌈</ModalTitle>
+              </ModalHeader>
+              <ModalBody>
+                <Label labelFor={getFieldId("datepicker")}>
+                  <RequiredAsterisk />
+                  Choose Dates
+                </Label>
+                <DatePicker
+                  defaultValue="2024-07-03"
+                  disabled={disabledDates}
+                  {...register("datepicker", { required: true })}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button appearance="subtle" onClick={closeModal}>
+                  Close
+                </Button>
+                {isSubmitted ? (
+                  <Button
+                    // appearance="primary"
+                    xcss={xcss({
+                      backgroundColor: "color.border.success",
+                    })}
+                  >
+                    Success!
+                  </Button>
+                ) : (
+                  <>
+                    {isSubmitting ? (
+                      <LoadingButton appearance="primary" isLoading>
+                        Loading button
+                      </LoadingButton>
+                    ) : (
+                      <Button appearance="primary" type="submit">
+                        Submit
+                      </Button>
+                    )}
+                  </>
+                )}
+              </ModalFooter>
+            </Form>
+          </Modal>
+        )}
+      </ModalTransition>
     </>
   );
 };
