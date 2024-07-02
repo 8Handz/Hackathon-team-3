@@ -1,15 +1,19 @@
 modules:
   macro:
-    - key: Poll-Forge-App
+    - key: Forge-Hackathon
       resource: main
       render: native
       resolver:
         function: resolver
-      title: Poll Forge App
+      title: Hackathon Forge App
       config: true
   function:
     - key: resolver
       handler: index.handler
+permissions:
+  scopes:
+    - 'read:jira-work'
+    - 'read:page:confluence'
 resources:
   - key: main
     path: src/frontend/index.jsx
