@@ -54,14 +54,13 @@ const App = () => {
           <Heading as="h1">Foundation Fundraiser !!</Heading>
         </Box>
 
-        <Stack alignInline="center" alignBlock="center" space="space.200">
+        <Stack alignInline="center" alignBlock="center" space="space.100">
           <ProgressTrackerExample />
           {/* <Stack grow="fill" space="space.200"> */}
           {data.map((fund) => (
             <FundButton name={fund.name} />
           ))}
         </Stack>
-        {/* </Stack> */}
       </Stack>
     </>
   );
@@ -79,7 +78,27 @@ const FundButton = ({ name }) => {
       >
         {name}
       </Button>
-      {clicked && "THIS IS A TEST"}
+      {clicked && <SummaryStack />}
+    </>
+  );
+};
+
+const SummaryStack = () => {
+  return (
+    <>
+      <Box
+        xcss={xcss({
+          backgroundColor: "color.background.discovery",
+        })}
+      >
+        <Stack>
+          <Text>
+            skjdnfskjdnfksnfksdnfklsdnfksnflksdnflksnflksnflksndflkssdfkjsnfjknskfjnsdkjfnsdjfnsdkjnfksjdnfjksnfkjsnfnsdfjsdnfksdnfksjfkjsf
+            sdfjnsdkjfskjdnfkjsdnfkjsdnfkjsnfjksdnfksdnfsdkf
+            sdfkjsnfkjsdnfkjsnfkjsnfkjsn
+          </Text>
+        </Stack>
+      </Box>
     </>
   );
 };
